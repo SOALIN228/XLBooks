@@ -1,22 +1,26 @@
 <template>
   <div>
-    <span class="msg">hello</span>
-    <van-button type="primary" @click="jump">按钮</van-button>
+    <search-bar disabled @onClick="onSearchBarClick"/>
+    <home-card></home-card>
   </div>
 </template>
 
 <script>
-import { get } from '@/utils/request'
+import SearchBar from '_c/home/search-bar'
+import HomeCard from '_c/home/home-card'
 
 export default {
+  name: 'Index',
+  components: {
+    SearchBar,
+    HomeCard
+  },
   data () {
     return {}
   },
   methods: {
-    jump () {
-      get('https://www.baidu.com').then(res => {
-        console.log(res)
-      })
+    onSearchBarClick () {
+      // 跳转搜索页
     }
   }
 }
