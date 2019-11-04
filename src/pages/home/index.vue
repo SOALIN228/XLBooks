@@ -173,11 +173,10 @@ export default {
         })
       }
       getUserInfo((userInfo) => {
-        console.log(userInfo)
         setStorageSync('userInfo', userInfo)
         const openId = getStorageSync('openId')
         if (!openId || openId.length === 0) {
-          getUserOpenId(openId => onOpenIdComplete(openId, userInfo))
+          getUserOpenId(openId => onOpenIdComplete(openId, userInfo)) // 传入回调函数
         } else {
           onOpenIdComplete(openId, userInfo)
         }
