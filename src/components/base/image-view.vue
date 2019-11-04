@@ -52,6 +52,10 @@ export default {
   },
   watch: {
     src (newValue, oldValue) {
+      if (newValue && newValue.length > 0 && newValue !== oldValue) {
+        this.isLoading = true
+        this.error = false
+      }
     }
   },
   methods: {
@@ -76,6 +80,7 @@ export default {
 
     .image {
       width: 100%;
+
       &.round {
         border-radius: 50%;
       }

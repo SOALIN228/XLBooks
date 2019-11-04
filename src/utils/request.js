@@ -11,15 +11,29 @@ function handleError (err) {
   console.log('handleError: ', err)
 }
 
-export function get (url, params = {}) {
+function showToast (response, showError) {
+  if (showError) {
+    const msg = (response && response.data && response.data.msg) || '请求失败'
+    mpvue.showToast({
+      title: msg,
+      icon: 'none',
+      duration: 2000
+    })
+  }
+}
+
+export function get (url, params = {}, showError = true) {
   const fly = createFly()
   if (fly) {
     return new Promise((resolve, reject) => {
       fly.get(url, params).then(response => {
-        console.log(response)
-        resolve(response)
+        if (response && response.data && response.data.error_code === 0) {
+          resolve(response)
+        } else {
+          showToast(response, showError)
+          reject(response)
+        }
       }).catch(err => {
-        console.log(err)
         handleError(err)
         reject(err)
       })
@@ -27,13 +41,17 @@ export function get (url, params = {}) {
   }
 }
 
-export function post (url, params = {}) {
+export function post (url, params = {}, showError = true) {
   const fly = createFly()
   if (fly) {
     return new Promise((resolve, reject) => {
       fly.post(url, params).then(response => {
-        console.log(response)
-        resolve(response)
+        if (response && response.data && response.data.error_code === 0) {
+          resolve(response)
+        } else {
+          showToast(response, showError)
+          reject(response)
+        }
       }).catch(err => {
         console.log(err)
         handleError(err)
