@@ -103,7 +103,6 @@ export default {
   },
   mounted () {
     this.init()
-    // this.getHomeData()
   },
   methods: {
     getHomeData (openId, userInfo) {
@@ -139,6 +138,7 @@ export default {
       })
     },
     onSearchBarClick () {
+      this.$router.push('/pages/search/main')
     },
     recommendChange (key) {
       switch (key) {
