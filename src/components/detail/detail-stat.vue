@@ -8,6 +8,7 @@
                   color="#717882"
                   void-color="#DEE0E2"
                   void-icon="star"
+                  disabled
         ></van-rate>
       </div>
       <div class="detail-stat-rate-hint">{{rankNum}}人点评</div>
