@@ -2,7 +2,7 @@
   <div>
     <div v-if="isAuth">
       <search-bar disabled @onClick="onSearchBarClick" :hot-search="hotSearch"/>
-      <home-card :data="homeCard"></home-card>
+      <home-card :data="homeCard" @onClick="onHomeBookClick"></home-card>
       <home-banner img="http://www.youbaobao.xyz/book/res/bg.jpg"
                    title="mpvue练手项目"
                    subTitle="立即体验"
@@ -167,8 +167,13 @@ export default {
     onCategoryMoreClick () {
       console.log('onCategoryMoreClick')
     },
-    onHomeBookClick () {
-      console.log('onHomeBookClick')
+    onHomeBookClick (book) {
+      this.$router.push({
+        path: '/pages/detail/main',
+        query: {
+          fileName: book.fileName
+        }
+      })
     },
     getUserInfo () {
       const onOpenIdComplete = (openId, userInfo) => {
