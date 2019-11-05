@@ -6,15 +6,21 @@
                @onTagClick="onTagClick"
                @onBtnClick="onBtnClick"
     ></tag-group>
+    <search-item icon="apps-o" title="计算机科学" sub-title="类别"></search-item>
+    <search-item icon="apps-o" title="计算机科学" sub-title="类别"></search-item>
+    <search-item icon="apps-o" title="计算机科学" sub-title="类别"></search-item>
+    <search-item icon="apps-o" title="计算机科学" sub-title="类别"></search-item>
   </div>
 </template>
 
 <script>
 import TagGroup from '_c/base/tag-group'
+import SearchItem from '_c/search/search-item'
 
 export default {
   name: 'Search',
   components: {
+    SearchItem,
     TagGroup
   },
   data () {
