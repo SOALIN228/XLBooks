@@ -1,21 +1,38 @@
 <template>
   <div>
-    <tag text="测试文本" @onClick="onTagClick"></tag>
+    <tag-group :value="tags"
+               header-text="热门搜索"
+               btn-text="换一批"
+               @onTagClick="onTagClick"
+               @onBtnClick="onBtnClick"
+    ></tag-group>
   </div>
 </template>
 
 <script>
-import Tag from '_c/base/tag'
+import TagGroup from '_c/base/tag-group'
 
 export default {
   name: 'Search',
-  components: { Tag },
+  components: {
+    TagGroup
+  },
   data () {
-    return {}
+    return {
+      tags: [
+        'aaa',
+        'bbb',
+        'cccccccccc',
+        'dddddddddddddddd'
+      ]
+    }
   },
   methods: {
-    onTagClick () {
-      console.log('onTagClick')
+    onTagClick (text, index) {
+      console.log('onTagClick', text, index)
+    },
+    onBtnClick () {
+      console.log('onBtnClick')
     }
   }
 }
