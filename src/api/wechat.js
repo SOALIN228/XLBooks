@@ -42,7 +42,6 @@ export function getStorageSync (key) { // 取出storage
 export function getUserOpenId (callback) { // 获取用户OpenId
   mpvue.login({
     success (res) {
-      console.log(res)
       if (res.code) {
         getOpnId(res.code).then(response => {
           const { data: { data: { openid } } } = response

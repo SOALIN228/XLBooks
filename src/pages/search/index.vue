@@ -1,19 +1,36 @@
 <template>
   <div>
-    <search-table :data="list"></search-table>
+    <search-list :data="data"></search-list>
   </div>
 </template>
 
 <script>
 import SearchTable from '../../components/search/search-table'
+import SearchList from '../../components/search/search-list'
 
 export default {
   name: 'Search',
   components: {
+    SearchList,
     SearchTable
   },
   data () {
     return {
+      item: [
+        {
+          icon: 'apps-o',
+          title: '123',
+          subTitle: '11'
+        }, {
+          icon: 'contact',
+          title: '123',
+          subTitle: '11'
+        }, {
+          icon: 'newspaper-o',
+          title: '123',
+          subTitle: '11'
+        }
+      ],
       list: [
         {
           'id': 225,
@@ -53,6 +70,14 @@ export default {
           'rootFile': 'OEBPS/package.opf'
         }
       ]
+    }
+  },
+  computed: {
+    data () {
+      return {
+        item: this.item,
+        list: this.list
+      }
     }
   },
   methods: {
