@@ -2,7 +2,7 @@
   <div class="search-item-wrapper" @click="onClick">
     <div class="search-item-icon">
       <div class="icon-wrapper">
-        <van-icon :name="icon" color="rgba(0,0,0,.5)" style="width: 20px;height: 20px;"></van-icon>
+        <van-icon :name="icon" color="rgba(0,0,0,.5)" size="20px" custom-style="vertical-align: top;"></van-icon>
       </div>
     </div>
     <div class="search-item-info">
@@ -51,9 +51,14 @@ export default {
     }
 
     .search-item-info {
+      width: 80%;
       margin-left: 10px;
 
       .search-item-title {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         color: #333;
         font-size: 14px;
         line-height: 20px;

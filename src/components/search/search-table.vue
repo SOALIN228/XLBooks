@@ -14,8 +14,8 @@
         </div>
         <div class="book-info-wrapper">
           <div class="book-title">{{book.title}}</div>
-          <div class="book-author">{{book.author}}</div>
-          <div class="book-category">{{book.category}}</div>
+          <div class="book-title book-author">{{book.author}}</div>
+          <div class="book-title book-category">{{book.categoryText}}</div>
         </div>
       </div>
     </div>

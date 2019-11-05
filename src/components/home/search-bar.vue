@@ -90,6 +90,8 @@ export default {
       .search-bar-input {
         flex: 1;
         margin: 0 12px;
+        color: #333;
+        font-size: 15px;
       }
 
       .search,

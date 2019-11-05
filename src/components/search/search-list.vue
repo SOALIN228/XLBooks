@@ -1,21 +1,24 @@
 <template>
   <div class="search-list-wrapper">
-    <search-item :icon="category.icon"
-                 :title="category.title"
-                 :sub-title="category.subTitle"
-                 @onClick="showList(category.title, 'category')"
+    <search-item icon="apps-o"
+                 :title="category"
+                 sub-title="Category"
+                 @onClick="showList(category, 'category')"
+                 v-if="category"
     ></search-item>
-    <search-item :icon="author.icon"
-                 :title="author.title"
-                 :sub-title="author.subTitle"
-                 @onClick="showList(author.title, 'author')"
+    <search-item icon="user-o"
+                 :title="author"
+                 sub-title="Author"
+                 @onClick="showList(author, 'author')"
+                 v-if="author"
     ></search-item>
-    <search-item :icon="publishe.icon"
-                 :title="publishe.title"
-                 :sub-title="publishe.subTitle"
-                 @onClick="showList(publishe.title, 'publishe')"
+    <search-item icon="newspaper-o"
+                 :title="publisher"
+                 sub-title="Publisher"
+                 @onClick="showList(publisher, 'publisher')"
+                 v-if="publisher"
     ></search-item>
-    <search-table :data="data.list" @onClick="onBookClick"></search-table>
+    <search-table :data="data.book" @onClick="onBookClick"></search-table>
   </div>
 </template>
 
@@ -34,13 +37,25 @@ export default {
   },
   computed: {
     category () {
-      return this.data.item[0]
+      if (this.data && this.data.category && this.data.category.length > 0) {
+        return this.data.category[0].categoryText
+      } else {
+        return null
+      }
     },
     author () {
-      return this.data.item[1]
+      if (this.data && this.data.author && this.data.author.length > 0) {
+        return this.data.author[0].author
+      } else {
+        return null
+      }
     },
-    publishe () {
-      return this.data.item[2]
+    publisher () {
+      if (this.data && this.data.publisher && this.data.publisher.length > 0) {
+        return this.data.publisher[0].publisher
+      } else {
+        return null
+      }
     }
   },
   data () {

@@ -1,91 +1,150 @@
 <template>
   <div>
-    <search-list :data="data"></search-list>
+    <search-bar :focus="searchFocus"
+                :hot-search="hotSearchKeyword"
+                @onChange="onChange"
+                @onClear="onClear"
+                @onConfirm="onConfirm"
+                ref="searchBar"
+    ></search-bar>
+    <tag-group header-text="热门搜索"
+               btn-text="换一批"
+               :value="hotSearchArray"
+               @onBtnClick="changeHotSearch"
+               @onTagClick="showBookDetail"
+               v-if="hotSearchArray.length > 0 && !showList"
+    ></tag-group>
+    <tag-group header-text="历史搜索"
+               btn-text="清空"
+               :value="historySearch"
+               @onBtnClick="clearHistorySearch"
+               @onTagClick="searchKeyWord"
+               v-if="historySearch.length > 0 && !showList"
+    ></tag-group>
+    <search-list :data="searchList" v-if="showList"></search-list>
   </div>
 </template>
 
 <script>
 import SearchTable from '../../components/search/search-table'
 import SearchList from '../../components/search/search-list'
+import SearchBar from '../../components/home/search-bar'
+import TagGroup from '../../components/base/tag-group'
+import { getStorageSync, setStorageSync, showToast } from '../../api/wechat'
+import { search, hotSearch } from '../../api'
 
 export default {
   name: 'Search',
   components: {
+    TagGroup,
+    SearchBar,
     SearchList,
     SearchTable
   },
   data () {
     return {
-      item: [
-        {
-          icon: 'apps-o',
-          title: '123',
-          subTitle: '11'
-        }, {
-          icon: 'contact',
-          title: '123',
-          subTitle: '11'
-        }, {
-          icon: 'newspaper-o',
-          title: '123',
-          subTitle: '11'
-        }
-      ],
-      list: [
-        {
-          'id': 225,
-          'fileName': '2016_Book_MicrofinanceEUStructuralFundsA',
-          'cover': 'https://www.youbaobao.xyz/book/res/img/Economics/2016_Book_MicrofinanceEUStructuralFundsA.jpeg',
-          'title': 'Microfinance, EU Structural Funds and Capacity Building for Managing Authorities',
-          'author': 'Giovanni Nicola Pes',
-          'publisher': 'Palgrave Macmillan',
-          'bookId': '2016_Book_MicrofinanceEUStructuralFundsA',
-          'category': 3,
-          'categoryText': 'Economics',
-          'language': 'en',
-          'rootFile': 'OEBPS/9781137536013.opf'
-        }, {
-          'id': 88,
-          'fileName': '2018_Book_BetweenMobilityAndMigration',
-          'cover': 'https://www.youbaobao.xyz/book/res/img/SocialSciences/978-3-319-77991-1_CoverFigure.jpg',
-          'title': 'Between Mobility and Migration',
-          'author': 'Peter Scholten',
-          'publisher': 'Springer International Publishing',
-          'bookId': '2018_Book_BetweenMobilityAndMigration',
-          'category': 2,
-          'categoryText': 'SocialSciences',
-          'language': 'en',
-          'rootFile': 'OEBPS/package.opf'
-        }, {
-          'id': 24,
-          'fileName': '2018_Book_SecurityInComputerAndInformati',
-          'cover': 'https://www.youbaobao.xyz/book/res/img/ComputerScience/978-3-319-95189-8_CoverFigure.jpg',
-          'title': 'Security in Computer and Information Sciences',
-          'author': 'Erol Gelenbe',
-          'publisher': 'Springer International Publishing',
-          'bookId': '2018_Book_SecurityInComputerAndInformati',
-          'category': 1,
-          'categoryText': 'ComputerScience',
-          'language': 'en',
-          'rootFile': 'OEBPS/package.opf'
-        }
-      ]
+      hotSearch: [],
+      hotSearchKeyword: '',
+      historySearch: [],
+      searchList: {},
+      searchFocus: true,
+      openId: '',
+      page: 1
     }
   },
   computed: {
-    data () {
-      return {
-        item: this.item,
-        list: this.list
-      }
+    showList () {
+      const key = Object.keys(this.searchList)
+      return key.length > 0
+    },
+    hotSearchArray () {
+      const _hotSearch = []
+      this.hotSearch.forEach(item => _hotSearch.push(item.title))
+      return _hotSearch
+    }
+  },
+  mounted () {
+    this.openId = getStorageSync('openId')
+    hotSearch().then(res => {
+      this.hotSearch = res.data.data
+    })
+    this.hotSearchKeyword = this.$route.query.hotSearch
+    this.historySearch = getStorageSync('historySearch') || []
+  },
+  onPageScroll () {
+    if (this.searchFocus) {
+      this.searchFocus = false
+    }
+  },
+  onReachBottom () {
+    if (this.showList) {
+      this.page++
+      const searchWord = this.$refs.searchBar.getValue()
+      search({
+        keyword: searchWord,
+        openId: this.openId,
+        page: this.page
+      }).then(res => {
+        const { book } = res.data.data
+        if (book && book.length > 0) {
+          this.searchList.book.push(...book)
+        } else {
+          showToast('别拉了，没了!')
+        }
+      })
     }
   },
   methods: {
-    onTagClick (text, index) {
-      console.log('onTagClick', text, index)
+    onConfirm (keyword) {
+      if (!keyword || keyword.trim().length === 0) { // 使用默认热门搜索
+        keyword = this.hotSearchKeyword
+        this.$refs.searchBar.setValue(keyword)
+      }
+
+      this.onSearch(keyword)
+
+      if (!this.historySearch.includes(keyword)) { // 写入历史记录
+        this.historySearch.push(keyword)
+        setStorageSync('historySearch', this.historySearch)
+      }
+      this.searchFocus = false
     },
-    onBtnClick () {
-      console.log('onBtnClick')
+    onClear () {
+      this.page = 1
+      this.searchList = {}
+    },
+    onChange (keyword) {
+      if (!keyword || keyword.trim().length === 0) {
+        this.searchList = {}
+        return
+      }
+      this.page = 1
+      this.onSearch(keyword)
+    },
+    onSearch (keyword) {
+      search({
+        keyword,
+        openId: this.openId,
+        page: this.page
+      }).then(res => {
+        this.searchList = res.data.data
+      })
+    },
+    changeHotSearch () {
+      hotSearch().then(res => {
+        this.hotSearch = res.data.data
+      })
+    },
+    showBookDetail (text, index) {
+      console.log('showBookDetail', index)
+    },
+    clearHistorySearch () {
+      this.historySearch = []
+      setStorageSync('historySearch', this.historySearch)
+    },
+    searchKeyWord (text) {
+      this.$refs.searchBar.setValue(text)
+      this.onSearch(text)
     }
   }
 }

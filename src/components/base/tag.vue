@@ -26,6 +26,8 @@ export default {
 
 <style lang="scss" scoped>
 .tag-wrapper {
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   text-align: center;

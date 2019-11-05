@@ -69,7 +69,7 @@ import {
   freeRead,
   hotBook,
   register
-} from '@/api/home'
+} from '@/api'
 import {
   getSetting,
   getUserInfo,
@@ -138,7 +138,12 @@ export default {
       })
     },
     onSearchBarClick () {
-      this.$router.push('/pages/search/main')
+      this.$router.push({
+        path: '/pages/search/main',
+        query: {
+          hotSearch: this.hotSearch
+        }
+      })
     },
     recommendChange (key) {
       switch (key) {

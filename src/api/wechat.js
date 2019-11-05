@@ -1,4 +1,4 @@
-import { getOpnId } from './home'
+import { getOpnId } from './index'
 
 export function getSetting (auth, onSuccess, onFail) { // 获取用户授权
   mpvue.getSetting({
@@ -67,4 +67,12 @@ export function showLoading (title) {
 
 export function hideLoading (title) {
   mpvue.hideLoading()
+}
+
+export function showToast (title) {
+  mpvue.showToast({
+    title: title,
+    icon: 'none',
+    duration: 2000
+  })
 }
