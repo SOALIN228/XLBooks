@@ -20,7 +20,7 @@
       <div class="detail-btn-wrapper">
         <van-button custom-class="detail-btn-read"
                     round
-                    @click="readBook"
+                    @click="() => readBook()"
         >
           阅读
         </van-button>
@@ -90,7 +90,24 @@ export default {
       }
     },
     readBook (href) {
-      console.log(href)
+      const query = {
+        fileName: this.book.fileName,
+        opf: this.book.opf
+      }
+      if (href) {
+        const index = href.indexOf('/')
+        if (index >= 0) {
+          query.navigation = href.slice(index + 1)
+        } else {
+          query.navigation = href
+        }
+      }
+      if (this.book && this.book.fileName) {
+        this.$router.push({
+          path: '/pages/read/main',
+          query
+        })
+      }
     },
     onRateChange (value) {
       const openId = getStorageSync('openId')
