@@ -74,3 +74,7 @@ export function bookShelfRemove (params) {
 export function searchList (params) {
   return get(`${API_URL}/book/search-list`, params)
 }
+
+export function setNavigationBarTitle (title) {
+  mpvue.setNavigationBarTitle({ title })
+}

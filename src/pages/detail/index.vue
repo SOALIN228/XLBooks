@@ -112,9 +112,7 @@ export default {
       const { fileName } = this.$route.query
       if (fileName) {
         bookContents({ fileName }).then(res => {
-          setTimeout(() => {
-            this.contents = res.data.data
-          }, 500)
+          this.contents = res.data.data
         })
       }
     },
