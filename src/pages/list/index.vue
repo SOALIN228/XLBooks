@@ -21,6 +21,7 @@ export default {
     }
   },
   mounted () {
+    this.page = 1
     this.getSearchList()
     const { title } = this.$route.query
     setNavigationBarTitle(title)

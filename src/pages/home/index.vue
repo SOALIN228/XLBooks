@@ -49,7 +49,7 @@
                    mode="category"
                    btnText="查看全部"
                    @onMoreClick="onCategoryMoreClick"
-                   @onBookClick="onHomeBookClick"
+                   @onBookClick="onCategoryClick"
         ></home-book>
       </div>
     </div>
@@ -165,7 +165,19 @@ export default {
       }
     },
     onCategoryMoreClick () {
-      console.log('onCategoryMoreClick')
+      this.$router.push({
+        path: '/pages/category-list/main'
+      })
+    },
+    onCategoryClick (category) {
+      this.$router.push({
+        path: '/pages/list/main',
+        query: {
+          key: 'categoryId',
+          text: category.category,
+          title: category.categoryText
+        }
+      })
     },
     onHomeBookClick (book) {
       this.$router.push({

@@ -78,3 +78,7 @@ export function searchList (params) {
 export function setNavigationBarTitle (title) {
   mpvue.setNavigationBarTitle({ title })
 }
+
+export function categoryList () {
+  return get(`${API_URL}/book/category/list/v2`)
+}

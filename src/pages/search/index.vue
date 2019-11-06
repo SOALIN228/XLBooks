@@ -64,6 +64,7 @@ export default {
     }
   },
   mounted () {
+    this.page = 1
     this.openId = getStorageSync('openId')
     hotSearch().then(res => {
       this.hotSearch = res.data.data
