@@ -39,7 +39,7 @@ import {
   bookDetail,
   bookRankSave,
   bookContents,
-  bookIsInShelf,
+  bookShelf,
   bookShelfSave,
   bookShelfRemove
 } from '../../api'
@@ -137,7 +137,7 @@ export default {
       const openId = getStorageSync('openId')
       const { fileName } = this.$route.query
       if (openId && fileName) {
-        bookIsInShelf({ openId, fileName }).then(res => {
+        bookShelf({ openId, fileName }).then(res => {
           const { data } = res.data
           data.length === 0 ? this.isInShelf = false : this.isInShelf = true
         })

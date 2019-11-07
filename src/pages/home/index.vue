@@ -58,18 +58,18 @@
 </template>
 
 <script>
-import SearchBar from '_c/home/search-bar'
-import HomeCard from '_c/home/home-card'
-import HomeBanner from '_c/home/home-banner'
-import HomeBook from '_c/home/home-book'
-import Auth from '_c/base/auth'
+import SearchBar from '../../components/home/search-bar'
+import HomeCard from '../../components/home/home-card'
+import HomeBanner from '../../components/home/home-banner'
+import HomeBook from '../../components/home/home-book'
+import Auth from '../../components/base/auth'
 import {
   getHomeData,
   recommend,
   freeRead,
   hotBook,
   register
-} from '@/api'
+} from '../../api'
 import {
   getSetting,
   getUserInfo,
@@ -78,7 +78,7 @@ import {
   getUserOpenId,
   showLoading,
   hideLoading
-} from '@/api/wechat'
+} from '../../api/wechat'
 
 export default {
   name: 'Home',
